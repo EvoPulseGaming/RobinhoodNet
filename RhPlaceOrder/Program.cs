@@ -35,6 +35,11 @@ namespace BasicallyMe.RobinhoodNet.RhPlaceOrder
 
             authenticate(rh).Wait();
 
+
+
+
+
+
             Account account = rh.DownloadAllAccounts().Result.First();
 
             Instrument instrument = null;
@@ -140,7 +145,7 @@ namespace BasicallyMe.RobinhoodNet.RhPlaceOrder
         static readonly string __tokenFile = System.IO.Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "RobinhoodNet",
-            "token");
+            "token2");
         
         static string getConsolePassword ()
         {

@@ -156,7 +156,10 @@ namespace BasicallyMe.RobinhoodNet
         public Task<PagedResponse<Account>>
         DownloadAccounts(PagedResponse<Account>.Cursor cursor = null)
         {
-            return downloadPagedResult<Account>(cursor, _rawClient.DownloadAccounts, json => new Account(json));
+            return downloadPagedResult<Account>(
+                cursor,
+                _rawClient.DownloadAccounts,
+                json => json.ToObject<Account>());
         }
 
 
@@ -220,7 +223,7 @@ namespace BasicallyMe.RobinhoodNet
         DownloadQuote (string symbol)
         {
             var q = await _rawClient.DownloadQuote(symbol).ConfigureAwait (false);
-            return new Quote(q);
+            return q.ToObject<Quote>();
         }
 
         public async Task<Quote>
@@ -241,7 +244,7 @@ namespace BasicallyMe.RobinhoodNet
                 Quote q = null;
                 if (o != null && o.HasValues)
                 {
-                    q = new Quote(o);
+                    q = o.ToObject<Quote>();
                 }
                 quotes.Add(q);
             }

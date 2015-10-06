@@ -23,19 +23,39 @@
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace BasicallyMe.RobinhoodNet
 {
     public class CashBalance
     {
+        [JsonProperty("created_at")]
         public DateTime CreatedAt                           { get; set; }
+
+        [JsonProperty("updated_at")]
         public DateTime UpdatedAt                           { get; set; }
 
+        [JsonProperty("cash_held_for_orders")]
         public decimal CashHeldForOrders                    { get; set; }        
+
+        [JsonProperty("cash")]
         public decimal Cash                                 { get; set; }
+
+        [JsonProperty("buying_power")]
         public decimal BuyingPower                          { get; set; }        
+
+        [JsonProperty("cash")]
+        public decimal Cash                                 { get; set; }
+
+        [JsonProperty("buying_power")]
+        public decimal BuyingPower                          { get; set; } 
+    
         public decimal CashAvailableForWithdrawal           { get; set; }
+
+        [JsonProperty("uncleared_deposits")]
         public decimal UnclearedDeposits                    { get; set; }
+
+        [JsonProperty("unsettled_funds")]
         public decimal UnsettledFunds                       { get; set; }
 
         public CashBalance()

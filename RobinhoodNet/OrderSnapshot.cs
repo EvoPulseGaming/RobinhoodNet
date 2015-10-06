@@ -156,7 +156,7 @@ namespace BasicallyMe.RobinhoodNet
 
             foreach (var e in (Newtonsoft.Json.Linq.JArray)json["executions"])
             {
-                this.Executions.Add(new Execution(e));
+                this.Executions.Add(e.ToObject<Execution>());
             }
 
             this.Type = parseOrderType((string)json["type"]);

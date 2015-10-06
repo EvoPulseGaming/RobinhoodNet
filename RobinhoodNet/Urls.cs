@@ -30,6 +30,7 @@ namespace BasicallyMe.RobinhoodNet
 {
     public class Url<T>
     {
+        [Newtonsoft.Json.JsonConstructor]
         public Url(string url)
         {
             this.Uri = new Uri(url);

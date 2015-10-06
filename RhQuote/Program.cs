@@ -98,7 +98,7 @@ namespace BasicallyMe.RobinhoodNet.RhQuote
         static readonly string __tokenFile = System.IO.Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "RobinhoodNet",
-            "token");
+            "token2");
 
         static string getConsolePassword ()
         {
