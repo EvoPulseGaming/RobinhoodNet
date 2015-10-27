@@ -37,6 +37,11 @@ namespace BasicallyMe.RobinhoodNet
 
         public override object ReadJson (JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
+            if (reader.Value == null)
+            {
+                return null;
+            }
+
             var str = reader.Value.ToString();
             return new Url<T>(str);
         }
