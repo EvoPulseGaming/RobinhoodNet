@@ -28,28 +28,40 @@ using Newtonsoft.Json;
 namespace BasicallyMe.RobinhoodNet
 {
 
-    public class TypedUrlConverter<T> : JsonConverter
-	{        
+    public class OrderTypeConverter : JsonConverter
+    {
         public override void WriteJson (JsonWriter writer, object value, JsonSerializer serializer)
         {
-            writer.WriteValue(value.ToString());
+            writer.WriteValue(value.ToString().ToLowerInvariant());
         }
 
         public override object ReadJson (JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var str = reader.Value.ToString();
-            return new Url<T>(str);
+            OrderType result = 0;
+
+            if (str.Equals("limit", StringComparison.OrdinalIgnoreCase))
+            {
+                result = OrderType.Limit;
+            }
+            else if (str.Equals("market", StringComparison.OrdinalIgnoreCase))
+            {
+                result = OrderType.Market;
+            }
+
+            return result;
         }
 
         public override bool CanConvert (Type objectType)
         {
             return (
                 objectType == typeof(string) ||
-                objectType == typeof(Uri) ||
-                objectType == typeof(Url<T>)
+                objectType == typeof(Side)
             );
         }
-	}
+    }
 
 
+
+    
 }

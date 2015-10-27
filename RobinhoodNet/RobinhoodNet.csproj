@@ -75,6 +75,12 @@
     <Compile Include="History.cs" />
     <Compile Include="Raw\RawRobinhoodClient_History.cs" />
     <Compile Include="TypedUrlConverter.cs" />
+    <Compile Include="SideConverter.cs" />
+    <Compile Include="TimeInForceConverter.cs" />
+    <Compile Include="OrderTypeConverter.cs" />
+    <Compile Include="TimeInForce.cs" />
+    <Compile Include="Side.cs" />
+    <Compile Include="OrderType.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

@@ -23,6 +23,7 @@
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace BasicallyMe.RobinhoodNet
 {
@@ -58,26 +59,37 @@ namespace BasicallyMe.RobinhoodNet
 
     public class OrderSnapshot
     {
+        [JsonProperty("cumulative_quantity")]
         public decimal CumulativeQuantity { get; set; }
 
+        [JsonProperty("created_at")]
         public DateTime CreatedAt { get; set; }
 
+        [JsonProperty("account")]
         public string AccountId { get; set; }
 
+        [JsonProperty("stop_price")]
         public decimal? StopPrice { get; set; }
 
+        [JsonProperty("reject_reason")]
         public string RejectReason { get; set; }
 
+        [JsonProperty("url")]
         public string OrderId { get; set; }
 
         public Url<OrderSnapshot> OrderUrl { get; set; }
 
+        [JsonProperty("average_price")]
         public decimal? AveragePrice { get; set; }
 
+        [JsonProperty("time_in_force")]
+        [JsonConverter(typeof(TimeInForceConverter))]
         public TimeInForce TimeInForce { get; set; }
 
+        [JsonProperty("updated_at")]
         public DateTime UpdatedAt { get; set; }
 
+        [JsonProperty("price")]
         public decimal? Price { get; set; }
 
         public decimal? TotalNotional
@@ -98,27 +110,42 @@ namespace BasicallyMe.RobinhoodNet
 
         }
 
+        [JsonProperty("instrument")]
         public string InstrumentId { get; set; }
 
+        [JsonProperty("state")]
         public string State { get; set; }
 
+        [JsonProperty("trigger")]
         public string Trigger { get; set; }
 
+        [JsonProperty("last_transaction_at")]
         public DateTime LastTransactionAt { get; set; }
 
+        [JsonProperty("fees")]
         public decimal Fees { get; set; }
 
+        [JsonProperty("cancel")]
+        [JsonConverter(typeof(TypedUrlConverter<OrderCancellation>))]
         public Url<OrderCancellation> CancelUrl { get; set; }
 
         // TODO: Wrap position
+        [JsonProperty("position")]
+        [JsonConverter(typeof(TypedUrlConverter<Position>))]
         public Url<Position> PositionUrl { get; set; }
 
+        [JsonProperty("executions")]
         public IList<Execution> Executions { get; private set; }
 
+        [JsonProperty("type")]
+        [JsonConverter(typeof(OrderTypeConverter))]
         public OrderType Type { get; set; }
 
+        [JsonProperty("side")]
+        [JsonConverter(typeof(SideConverter))]
         public Side Side { get; set; }
 
+        [JsonProperty("quantity")]
         public int Quantity { get; set; }
 
         public OrderSnapshot ()

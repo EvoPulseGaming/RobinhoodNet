@@ -23,30 +23,48 @@
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace BasicallyMe.RobinhoodNet
 {
 
     public class NewOrderSingle
     {
+        [JsonProperty("account")]
+        [JsonConverter(typeof(TypedUrlConverter<Account>))]
         public Url<Account> AccountUrl { get; set; }
 
+        [JsonProperty("symbol")]
         public string Symbol { get; set; }
 
+        [JsonProperty("instrument")]
+        [JsonConverter(typeof(TypedUrlConverter<Instrument>))]
         public Url<Instrument> InstrumentUrl { get; set; }
 
+        [JsonProperty("time_in_force")]
         public TimeInForce TimeInForce { get; set; }
+
+        [JsonProperty("trigger")]
+        public string Trigger { get; set; }
 
         public TriggerType Trigger { get; set; }
 
+        [JsonProperty("type")]
+        [JsonConverter(typeof(OrderTypeConverter))]
         public OrderType OrderType { get; set; }
 
+        [JsonProperty("side")]
+        [JsonConverter(typeof(SideConverter))]
         public Side Side { get; set; }
 
+        [JsonProperty("quantity")]
         public int Quantity { get; set; }
 
         private decimal _price;
-        public decimal Price
+
+
+        [JsonProperty("price")]
+        public decimal? Price { get; set; }
         {
             get
             {
