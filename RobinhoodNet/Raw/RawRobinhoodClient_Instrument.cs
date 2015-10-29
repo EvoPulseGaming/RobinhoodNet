@@ -24,11 +24,23 @@ namespace BasicallyMe.RobinhoodNet.Raw
         }
 
         public Task<JToken>
-        DownloadInstrumentFundamentals (string symbol)
+        DownloadInstrumentFundamentalsForSymbol (string symbol)
         {
             var b = new UriBuilder(FUNDAMENTALS_URL);
             b.Path = symbol + "/";
             return doGet(b.Uri);
+        }
+
+        public Task<JToken>
+        DownloadInstrumentFundamentalsForUrl (string url)
+        {
+            return doGet(url);
+        }
+
+        public Task<JToken>
+        DownloadInstrumentSplits (string url)
+        {
+            return doGet(url);
         }
 
         public async Task<JToken>

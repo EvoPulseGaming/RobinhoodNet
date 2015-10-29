@@ -81,6 +81,7 @@
     <Compile Include="TimeInForce.cs" />
     <Compile Include="Side.cs" />
     <Compile Include="OrderType.cs" />
+    <Compile Include="InstrumentSplit.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

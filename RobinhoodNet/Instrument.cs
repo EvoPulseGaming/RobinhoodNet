@@ -23,35 +23,53 @@
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace BasicallyMe.RobinhoodNet
 {
     public class Instrument
     {
+        [JsonProperty("splits")]
+        [JsonConverter(typeof(TypedUrlConverter<InstrumentSplit>))]
         public Url<Splits>  InstrumentSplitsUrl { get; set; }
 
+        [JsonProperty("margin_initial_ratio")]
         public decimal MarginInitialRatio { get; set; }
 
+        [JsonProperty("url")]
+        [JsonConverter(typeof(TypedUrlConverter<Instrument>))]
         public Url<Instrument> InstrumentUrl { get; set; }
 
+        [JsonProperty("quote")]
+        [JsonConverter(typeof(TypedUrlConverter<Quote>))]
         public Url<Quote> QuoteUrl { get; set; }
 
+        [JsonProperty("symbol")]
         public string Symbol { get; set; }
 
         public string InstrumentId { get; set; }
 
+        [JsonProperty("bloomberg_unique")]
         public string BloombergUnique { get; set; }
         
+        [JsonProperty("fundamentals")]
+        [JsonConverter(typeof(TypedUrlConverter<InstrumentFundamentals>))]
         public Url<InstrumentFundamentals> InstrumentFundamentalsUrl { get; set; }
 
+        [JsonProperty("state")]
         public string State { get; set; }
 
+        [JsonProperty("tradeable")]
         public bool IsTradeable { get; set; }
 
+        [JsonProperty("maintenance_ratio")]
         public decimal MaintenanceRatio { get; set; }
         
+        [JsonProperty("market")]
+        [JsonConverter(typeof(TypedUrlConverter<Market>))]
         public Url<Market> MarketUrl { get; set; }
 
+        [JsonProperty("name")]
         public string Name { get; set; }
 
 
