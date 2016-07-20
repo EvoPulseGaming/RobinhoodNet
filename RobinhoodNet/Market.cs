@@ -26,13 +26,36 @@ using System.Collections.Generic;
 
 namespace BasicallyMe.RobinhoodNet
 {
-    
-
     // TODO: Implement me!
 	public class Market
-	{
-	}
+    {
+        public string       Website { get; set; }
+        public string       City { get; set; }
+        public string       Name { get; set; }
+        public Url<Market>  Url { get; set; }
+        public string       Country { get; set; }
+        public Url<Hours>   TodaysHours { get; set; }
+        public string       OperatingMic { get; set; }
+        public string       Acronym { get; set; }
+        public string       Timezone { get; set; }
+        public string       Mic { get; set; }
+        
+        public Market()
+        {
+        }
 
-
-
+        internal Market(Newtonsoft.Json.Linq.JToken json) : this()
+        {
+            Website      = (string)json["website"];
+            City         = (string)json["city"];
+            Name         = (string)json["name"];
+            Url          = new Url<Market>((string)json["url"]);
+            Country      = (string)json["country"];
+            TodaysHours  = new Url<Hours>((string)json["todays_hours"]);
+            OperatingMic = (string)json["operating_mic"];
+            Acronym      = (string)json["acronym"];
+            Timezone     = (string)json["timezone"];
+            Mic = (string)json["mic"];
+        }
+    }
 }
