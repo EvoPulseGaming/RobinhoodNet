@@ -38,14 +38,12 @@ namespace BasicallyMe.RobinhoodNet
 
         public string AccountType { get; set; }
 
-        // TODO: What is this? Separately managed accounts?
-        public dynamic Sma { get; set; }  // TODO: What is this?
-        public dynamic SmaHeldForOrders { get; set; }
+        // Special Memorandum Account; Both of these values can be null if not using margin
+        public decimal? Sma { get; set; }
+        public decimal? SmaHeldForOrders { get; set; }
 
-        public dynamic MarginBalances { get; set; }
-
-        
-        public Balance CashBalance { get; set; }
+        public MarginBalance MarginBalance { get; set; }
+        public CashBalance CashBalance { get; set; }
 
         public Url<AccountPortfolio> PortfolioUrl { get; set; }
 
@@ -60,7 +58,7 @@ namespace BasicallyMe.RobinhoodNet
 
         public Account()
         {
-            CashBalance = new Balance();
+            CashBalance = new CashBalance();
         }
 
         internal Account(Newtonsoft.Json.Linq.JToken json) : this()
@@ -80,14 +78,18 @@ namespace BasicallyMe.RobinhoodNet
             AccountNumber = (string)json["account_number"];
             AccountType   = (string)json["type"];
 
-            Sma = json["sma"];
-            SmaHeldForOrders = json["sma_held_for_orders"];
+            Sma = (decimal?)json["sma"];
+            SmaHeldForOrders = (decimal?)json["sma_held_for_orders"];
 
-            MarginBalances = json["margin_balances"];
+            // mark MarginBalance, CashBalance null if they do not exist
 
+            try { CashBalance = new CashBalance(json["cash_balances"]); }
+            catch { CashBalance = null; }
+
+            try { MarginBalance = new MarginBalance(json["margin_balances"]); }
+            catch { MarginBalance = null; }
+           
             MaxAchEarlyAccessAmount = (decimal)json["max_ach_early_access_amount"];
-
-            CashBalance = new Balance(json["cash_balances"]);
         }
     }
     

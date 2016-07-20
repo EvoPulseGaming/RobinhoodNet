@@ -33,6 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Helpers\InstrumentCache.cs" />
+    <Compile Include="MarginBalance.cs" />
     <Compile Include="PagedResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Account.cs" />
@@ -53,7 +54,7 @@
     <Compile Include="InstrumentFundamentals.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Market.cs" />
-    <Compile Include="Balance.cs" />
+    <Compile Include="CashBalance.cs" />
     <Compile Include="Helpers\RobinhoodClientHelpers.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

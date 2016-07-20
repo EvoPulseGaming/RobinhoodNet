@@ -26,7 +26,7 @@ using System.Collections.Generic;
 
 namespace BasicallyMe.RobinhoodNet
 {
-    public class Balance
+    public class CashBalance
     {
         public DateTime CreatedAt                           { get; set; }
         public DateTime UpdatedAt                           { get; set; }
@@ -38,12 +38,12 @@ namespace BasicallyMe.RobinhoodNet
         public decimal UnclearedDeposits                    { get; set; }
         public decimal UnsettledFunds                       { get; set; }
 
-        public Balance()
+        public CashBalance()
         {
 
         }
 
-        internal Balance(Newtonsoft.Json.Linq.JToken json)
+        internal CashBalance(Newtonsoft.Json.Linq.JToken json)
         {
             this.CreatedAt = (DateTime)json["created_at"];
             this.UpdatedAt = (DateTime)json["updated_at"];
