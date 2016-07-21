@@ -49,6 +49,8 @@ namespace BasicallyMe.RobinhoodNet
 
         public bool TradingHalted { get; set; }
 
+        public Url<Instrument> Instrument { get; set; }
+
         public decimal Change
         {
             get
@@ -103,7 +105,10 @@ namespace BasicallyMe.RobinhoodNet
           if (json["trading_halted"] != null)
             this.TradingHalted = (bool)json["trading_halted"];
 
-          if (json["last_extended_hours_trade_price"] != null)
+          if (json["instrument"] != null)
+                this.Instrument = new Url<Instrument>((string)json["instrument"]);
+
+            if (json["last_extended_hours_trade_price"] != null)
           {
             var v = json["last_extended_hours_trade_price"];
             if (v != null)

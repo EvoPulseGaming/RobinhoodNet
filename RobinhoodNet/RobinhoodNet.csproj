@@ -33,6 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Helpers\InstrumentCache.cs" />
+    <Compile Include="Hours.cs" />
     <Compile Include="MarginBalance.cs" />
     <Compile Include="PagedResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
