@@ -32,6 +32,7 @@ namespace BasicallyMe.RobinhoodNet
         public DateTime TimeStamp { get; set; }
         public decimal  Price { get; set; }
         public int      Quantity { get; set; }
+        public DateTime SettlementDate { get; set; }
 
         public Execution() { }
 
@@ -40,6 +41,7 @@ namespace BasicallyMe.RobinhoodNet
             this.TimeStamp = (DateTime)json["timestamp"];
             this.Price     = (decimal)json["price"];
             this.Quantity  = (int)(decimal)json["quantity"];
+            this.SettlementDate = (DateTime)json["settlement_date"];
         }
     }
 }
