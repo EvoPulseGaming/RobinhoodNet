@@ -34,6 +34,7 @@
   <ItemGroup>
     <Compile Include="ACHRelationship.cs" />
     <Compile Include="ACHTransfer.cs" />
+    <Compile Include="Dividend.cs" />
     <Compile Include="Helpers\InstrumentCache.cs" />
     <Compile Include="Hours.cs" />
     <Compile Include="MarginBalance.cs" />
