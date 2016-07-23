@@ -32,9 +32,12 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ACHRelationship.cs" />
+    <Compile Include="ACHTransfer.cs" />
     <Compile Include="Helpers\InstrumentCache.cs" />
     <Compile Include="Hours.cs" />
     <Compile Include="MarginBalance.cs" />
+    <Compile Include="NewACHSingle.cs" />
     <Compile Include="PagedResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Account.cs" />

@@ -80,4 +80,12 @@ namespace BasicallyMe.RobinhoodNet
     public class AccountPositions
     {
     }
+
+    public class ACHCancellation
+    {
+    }
+
+    public class BankUnlink
+    {
+    }
 }
