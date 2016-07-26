@@ -28,8 +28,7 @@ namespace BasicallyMe.RobinhoodNet
 {
     public class Instrument
     {
-        // TODO: Wrap splits
-        public Url<int>  InstrumentSplitsUrl { get; set; }
+        public Url<Splits>  InstrumentSplitsUrl { get; set; }
 
         public decimal MarginInitialRatio { get; set; }
 
@@ -40,8 +39,7 @@ namespace BasicallyMe.RobinhoodNet
         public string Symbol { get; set; }
 
         public string BloombergUnique { get; set; }
-
-        // TODO: Wrap fundamentals
+        
         public Url<InstrumentFundamentals> InstrumentFundamentalsUrl { get; set; }
 
         public string State { get; set; }
@@ -49,8 +47,7 @@ namespace BasicallyMe.RobinhoodNet
         public bool IsTradeable { get; set; }
 
         public decimal MaintenanceRatio { get; set; }
-
-        // TODO: Wrap market
+        
         public Url<Market> MarketUrl { get; set; }
 
         public string Name { get; set; }
@@ -64,7 +61,7 @@ namespace BasicallyMe.RobinhoodNet
         internal Instrument (Newtonsoft.Json.Linq.JToken json)
         {
             // "splits": "https:\\/\\/api.robinhood.com\\/instruments\\/376ca781-1333-40ca-bd61-a48f46ebd950\\/splits\\/",
-            this.InstrumentSplitsUrl = new Url<int>((string)json["splits"]);
+            this.InstrumentSplitsUrl = new Url<Splits>((string)json["splits"]);
 
             //"margin_initial_ratio": "0.5000",
             this.MarginInitialRatio = (decimal)json["margin_initial_ratio"];
