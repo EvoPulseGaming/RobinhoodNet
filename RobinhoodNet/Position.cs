@@ -26,26 +26,39 @@ using System.Collections.Generic;
 
 namespace BasicallyMe.RobinhoodNet
 {
-  public class Position
-  {
-
-    public DateTime UpdatedAt { get; set; }
-
-    public Url<Account> InstrumentUrl { get; set; }
-    public decimal AverageBuyPrice { get; set; }
-    public decimal Cash { get; set; }
-    public decimal Quantity { get; set; }
-    public Position()
+    public class Position
     {
-    }
+        public Url<Account> AccountUrl { get; set; }
+        public Url<Instrument> InstrumentUrl { get; set; }
+        public Url<Position> Url { get; set; }
 
-    internal Position(Newtonsoft.Json.Linq.JToken json)
-      : this()
-    {
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
-      InstrumentUrl = new Url<Account>((string)json["instrument"]);
-      AverageBuyPrice = (decimal)json["average_buy_price"];
-      Quantity = (decimal)json["quantity"];
+        public decimal IntradayQuantity { get; set; }
+        public decimal AverageBuyPrice { get; set; }
+        public decimal Quantity { get; set; }
+        public decimal SharesHeldForBuys { get; set; }
+        public decimal SharesHeldForSells { get; set; }
+        public Position()
+        {
+        }
+
+        internal Position(Newtonsoft.Json.Linq.JToken json) : this()
+        {
+
+            AccountUrl = new Url<Account>((string)json["account"]);
+            InstrumentUrl = new Url<Instrument>((string)json["instrument"]);
+            Url = new Url<Position>((string)json["url"]);
+
+            CreatedAt = (DateTime)json["created_at"];
+            UpdatedAt = (DateTime)json["updated_at"];
+
+            IntradayQuantity = (decimal)json["intraday_quantity"];
+            AverageBuyPrice = (decimal)json["average_buy_price"];
+            Quantity = (decimal)json["quantity"];
+            SharesHeldForBuys = (decimal)json["shares_held_for_buys"];
+            SharesHeldForSells = (decimal)json["shares_held_for_sells"];
+        }
     }
-  }
 }
