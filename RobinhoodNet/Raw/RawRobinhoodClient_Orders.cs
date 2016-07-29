@@ -8,13 +8,6 @@ namespace BasicallyMe.RobinhoodNet.Raw
 {
     public partial class RawRobinhoodClient
     {
-      public Task<JToken>
-        DownloadPositions(string url)
-      {
-        return doGet(url);
-      }
-
-
         public Task<JToken>
         DownloadOrders(string cursor = null)
         {
