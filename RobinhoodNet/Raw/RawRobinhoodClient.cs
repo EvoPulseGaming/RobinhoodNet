@@ -12,6 +12,7 @@ namespace BasicallyMe.RobinhoodNet.Raw
     {
         HttpClient _httpClient;
 
+        static readonly string API_URL = "https://api.robinhood.com/";
         static readonly string LOGIN_URL = "https://api.robinhood.com/api-token-auth/";
         static readonly string INVESTMENT_PROFILE_URL = "https://api.robinhood.com/user/investment_profile/";
         static readonly string ACCOUNTS_URL = "https://api.robinhood.com/accounts/";
@@ -28,11 +29,11 @@ namespace BasicallyMe.RobinhoodNet.Raw
         static readonly string NOTIFICATIONS_URL = "https://api.robinhood.com/notifications/";
         static readonly string ORDERS_URL = "https://api.robinhood.com/orders/";
         static readonly string PASSWORD_RESET_URL = "https://api.robinhood.com/password_reset/request/";
+        static readonly string POSITIONS_URL = "https://api.robinhood.com/positions/";
         static readonly string QUOTES_URL = "https://api.robinhood.com/quotes/";
-        static readonly string DUCUMENT_REQUESTS_URL = "https://api.robinhood.com/upload/document_requests/";
+        static readonly string DOCUMENT_REQUESTS_URL = "https://api.robinhood.com/upload/document_requests/";
         static readonly string USER_URL = "https://api.robinhood.com/user/";
         static readonly string WATCHLISTS_URL = "https://api.robinhood.com/watchlists/";
-        static string POSITIONS_URL;
 
         public RawRobinhoodClient ()
         {
@@ -49,7 +50,7 @@ namespace BasicallyMe.RobinhoodNet.Raw
             _httpClient.DefaultRequestHeaders.Add(
                 "Accept-Language",
                 "en;q=1, fr;q=0.9, de;q=0.8, ja;q=0.7, nl;q=0.6, it;q=0.5");
-            _httpClient.DefaultRequestHeaders.Add("X-Robinhood-API-Version", "1.0.0");
+            _httpClient.DefaultRequestHeaders.Add("X-Robinhood-API-Version", "1.95.1");
             _httpClient.DefaultRequestHeaders.Add("Connection", "keep-alive");
             _httpClient.DefaultRequestHeaders.Add("User-Agent", "Robinhood/823 (iPhone; iOS 7.1.2; Scale/2.00)");
         }
@@ -116,6 +117,6 @@ namespace BasicallyMe.RobinhoodNet.Raw
         {
             var resp = _httpClient.GetAsync(url);
             return parseJsonResponse(resp);
-        }
+        }        
     }
 }
