@@ -42,24 +42,30 @@ namespace BasicallyMe.RobinhoodNet.RhQuote
 
             authenticate(rh).Wait();
 
-
-            var quotes = rh.DownloadQuote(args).Result;
-
-            Console.WriteLine(DateTime.Now);
-            foreach (var q in quotes)
+            try
             {
-                if (q == null)
+                var quotes = rh.DownloadQuote(args).Result;
+                Console.WriteLine(DateTime.Now);
+                foreach (var q in quotes)
                 {
-                    continue;
-                }
+                    if (q == null)
+                    {
+                        continue;
+                    }
 
-                Console.WriteLine("{0}\tCh: {1}%\tLTP: {2}\tBID: {3}\tASK: {4}",
-                                  q.Symbol,
-                                  q.ChangePercentage,
-                                  q.LastTradePrice,
-                                  q.BidPrice,
-                                  q.AskPrice);
+                    Console.WriteLine("{0}\tCh: {1}%\tLTP: {2}\tBID: {3}\tASK: {4}",
+                                      q.Symbol,
+                                      q.ChangePercentage,
+                                      q.LastTradePrice,
+                                      q.BidPrice,
+                                      q.AskPrice);
+                }
             }
+            catch
+            {
+                Console.WriteLine("None of the quotes entered were found.");
+            }
+
         }
 
 
