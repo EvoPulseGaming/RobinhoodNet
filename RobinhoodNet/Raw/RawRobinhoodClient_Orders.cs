@@ -15,6 +15,14 @@ namespace BasicallyMe.RobinhoodNet.Raw
             return doGet(url);
         }
 
+        public Task<JToken>
+        DownloadOrder(string order)
+        {
+            var b = new UriBuilder(ORDERS_URL);
+            b.Path = b.Path + order + "/";
+            return doGet(b.Uri);
+        }
+        
         public async Task
         CancelOrder(string orderCancelUrl)
         {
