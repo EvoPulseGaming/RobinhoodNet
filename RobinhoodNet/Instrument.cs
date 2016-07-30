@@ -38,6 +38,8 @@ namespace BasicallyMe.RobinhoodNet
 
         public string Symbol { get; set; }
 
+        public string InstrumentId { get; set; }
+
         public string BloombergUnique { get; set; }
         
         public Url<InstrumentFundamentals> InstrumentFundamentalsUrl { get; set; }
@@ -95,6 +97,9 @@ namespace BasicallyMe.RobinhoodNet
 
             //"name": "PepsiCo Inc."
             this.Name = (string)json["name"];
+
+            //"instrument": "376ca781-1333-40ca-bd61-a48f46ebd950"
+            this.InstrumentId = (string)json["id"];
         }
     }
 
