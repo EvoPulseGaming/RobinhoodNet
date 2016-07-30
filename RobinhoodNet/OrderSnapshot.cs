@@ -70,6 +70,8 @@ namespace BasicallyMe.RobinhoodNet
 
         public string OrderId { get; set; }
 
+        public Url<OrderSnapshot> OrderUrl { get; set; }
+
         public decimal? AveragePrice { get; set; }
 
         public TimeInForce TimeInForce { get; set; }
@@ -131,7 +133,8 @@ namespace BasicallyMe.RobinhoodNet
             this.AccountId = (string)json["account"];
             this.StopPrice = (decimal?)json["stop_price"];
             this.RejectReason = (string)json["reject_reason"];
-            this.OrderId = (string)json["url"];
+            this.OrderUrl = new Url<OrderSnapshot>((string)json["url"]);
+            this.OrderId = (string)json["id"];
             this.AveragePrice = (decimal?)json["average_price"];
 
             this.TimeInForce = parseTif((string)json["time_in_force"]);
