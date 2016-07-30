@@ -33,6 +33,7 @@ namespace BasicallyMe.RobinhoodNet
         public bool IsWithdrawalHalted { get; set; }
         public bool IsSweepEnabled { get; set; }
         public bool OnlyPositionClosingTrades { get; set; }
+        public bool DepositHalted { get; set; }
 
         public DateTime UpdatedAt { get; set; }
 
@@ -41,6 +42,11 @@ namespace BasicallyMe.RobinhoodNet
         // Special Memorandum Account; Both of these values can be null if not using margin
         public decimal? Sma { get; set; }
         public decimal? SmaHeldForOrders { get; set; }
+        public decimal BuyingPower { get; set; }
+        public decimal Cash { get; set; }
+        public decimal CashHeldForOrders { get; set; }
+        public decimal UnclearedDeposits { get; set; }
+        public decimal UnsettledFunds { get; set; }
 
         public MarginBalance MarginBalance { get; set; }
         public CashBalance CashBalance { get; set; }
@@ -63,23 +69,29 @@ namespace BasicallyMe.RobinhoodNet
 
         internal Account(Newtonsoft.Json.Linq.JToken json) : this()
         {
-            IsDeactivated             = (bool)json["deactivated"];
-            IsWithdrawalHalted        = (bool)json["withdrawal_halted"];
-            IsSweepEnabled            = (bool)json["sweep_enabled"];
+            IsDeactivated = (bool)json["deactivated"];
+            IsWithdrawalHalted = (bool)json["withdrawal_halted"];
+            IsSweepEnabled = (bool)json["sweep_enabled"];
+            DepositHalted = (bool)json["deposit_halted"];
             OnlyPositionClosingTrades = (bool)json["only_position_closing_trades"];
 
             UpdatedAt = (DateTime)json["updated_at"];
 
-            AccountUrl    = new Url<Account>((string)json["url"]);
-            PortfolioUrl  = new  Url<AccountPortfolio>((string)json["portfolio"]);
-            UserUrl       = new Url<User>((string)json["user"]);
-            PositionsUrl  = new  Url<AccountPositions>((string)json["positions"]);
+            AccountUrl = new Url<Account>((string)json["url"]);
+            PortfolioUrl = new Url<AccountPortfolio>((string)json["portfolio"]);
+            UserUrl = new Url<User>((string)json["user"]);
+            PositionsUrl = new Url<AccountPositions>((string)json["positions"]);
 
             AccountNumber = (string)json["account_number"];
-            AccountType   = (string)json["type"];
+            AccountType = (string)json["type"];
 
             Sma = (decimal?)json["sma"];
             SmaHeldForOrders = (decimal?)json["sma_held_for_orders"];
+            BuyingPower = (decimal)json["buying_power"];
+            Cash = (decimal)json["cash"];
+            CashHeldForOrders = (decimal)json["cash_held_for_orders"];
+            UnclearedDeposits = (decimal)json["uncleared_deposits"];
+            UnsettledFunds = (decimal)json["unsettled_funds"];
 
             // mark MarginBalance, CashBalance null if they do not exist
 
@@ -88,7 +100,7 @@ namespace BasicallyMe.RobinhoodNet
 
             try { MarginBalance = new MarginBalance(json["margin_balances"]); }
             catch { MarginBalance = null; }
-           
+
             MaxAchEarlyAccessAmount = (decimal)json["max_ach_early_access_amount"];
         }
     }
