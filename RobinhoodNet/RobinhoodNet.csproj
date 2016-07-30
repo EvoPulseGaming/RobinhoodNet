@@ -38,6 +38,7 @@
     <Compile Include="Helpers\InstrumentCache.cs" />
     <Compile Include="Hours.cs" />
     <Compile Include="MarginBalance.cs" />
+    <Compile Include="MarginSettings.cs" />
     <Compile Include="NewACHSingle.cs" />
     <Compile Include="PagedResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -46,6 +47,8 @@
     <Compile Include="OrderSnapshot.cs" />
     <Compile Include="Instrument.cs" />
     <Compile Include="Quote.cs" />
+    <Compile Include="Raw\RawRobinhoodClient_Positions.cs" />
+    <Compile Include="Raw\RawRobinhoodClient_Unsorted.cs" />
     <Compile Include="RobinhoodClient.cs" />
     <Compile Include="Execution.cs" />
     <Compile Include="Splits.cs" />
