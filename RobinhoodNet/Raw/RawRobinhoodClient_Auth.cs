@@ -20,25 +20,41 @@ namespace BasicallyMe.RobinhoodNet.Raw
             }
         }
 
-        public async Task 
+        public async Task<bool>
         Authenticate (string userName, string password)
         {
-            var auth = await doPost(LOGIN_URL, new Dictionary<string, string>
+            try
+            {
+                var auth = await doPost(LOGIN_URL, new Dictionary<string, string>
                 {
                     { "username", userName },
                     { "password", password }
                 });
 
-            this.AuthToken = auth["token"].ToString();
+                this.AuthToken = auth["token"].ToString();
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
 
-        public Task Authenticate (string token)
+        public async Task<bool> Authenticate (string token)
         {
             this.AuthToken = token;
 
-            var tcs = new TaskCompletionSource<bool>();
-            tcs.SetResult(true);
-            return tcs.Task;
+            // Test to see if the token is valid
+            try
+            {
+                await doGet(API_URL);
+            }
+            catch
+            {
+                token = null;
+                return false;
+            }
+            return true;
         }
     }
 }

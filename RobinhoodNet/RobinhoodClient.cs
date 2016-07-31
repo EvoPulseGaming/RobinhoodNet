@@ -44,15 +44,23 @@ namespace BasicallyMe.RobinhoodNet
             get { return _rawClient.AuthToken; }
         }
 
-        public Task
-        Authenticate (string userName, string password)
+        public bool Authenticate (string userName, string password)
         {
-            return _rawClient.Authenticate(userName, password);
+            return _rawClient.Authenticate(userName, password).Result;
         }
 
-        public Task Authenticate (string token)
+        public bool Authenticate (string token)
         {
-            return _rawClient.Authenticate(token);
+            return _rawClient.Authenticate(token).Result;
+        }
+
+        public bool isAuthenticated
+        {
+            get
+            {
+                if (_rawClient.AuthToken != null) return true;
+                else return false;
+            }
         }
 
         async Task<IList<TResult>>
