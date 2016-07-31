@@ -40,7 +40,11 @@ namespace BasicallyMe.RobinhoodNet.RhQuote
 
             var rh = new RobinhoodClient();
 
-            authenticate(rh).Wait();
+            if (!authenticate(rh))
+            {
+                Console.WriteLine("Unable to authenticate user");
+                Environment.Exit(1);
+            }
 
             try
             {
@@ -106,12 +110,20 @@ namespace BasicallyMe.RobinhoodNet.RhQuote
             return sb.ToString();
         }
 
-        static async Task authenticate (RobinhoodClient client)
+        static bool authenticate (RobinhoodClient client)
         {
             if (System.IO.File.Exists(__tokenFile))
             {
                 var token = System.IO.File.ReadAllText(__tokenFile);
-                await client.Authenticate(token);
+                if (!client.Authenticate(token))
+                {
+                    if (System.IO.File.Exists(__tokenFile))
+                    {
+                        System.IO.File.Delete(__tokenFile);
+                    }
+                    return false;
+                }
+                return true;
             }
             else
             {
@@ -121,13 +133,18 @@ namespace BasicallyMe.RobinhoodNet.RhQuote
                 Console.Write("password: ");
                 string password = getConsolePassword();
 
-                await client.Authenticate(userName, password);
+                if (!client.Authenticate(userName, password))
+                {
+                    return false;
+                }
 
                 System.IO.Directory.CreateDirectory(
                     System.IO.Path.GetDirectoryName(__tokenFile));
 
                 System.IO.File.WriteAllText(__tokenFile, client.AuthToken);
-            }            
+                return true;
+            }
         }
+        
     }
 }
