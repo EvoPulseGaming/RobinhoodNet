@@ -8,6 +8,11 @@ namespace BasicallyMe.RobinhoodNet.Raw
 {
     public partial class RawRobinhoodClient
     {
-        
+        public Task<JToken>
+        DownloadPortfolio(string account)
+        {
+            string url = PORTFOLIOS_URL + account + "/";
+            return doGet(url);
+        }
     }
 }

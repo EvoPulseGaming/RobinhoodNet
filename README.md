@@ -14,6 +14,7 @@ The RobinhoodNet client is still in its early stages of development, but it alre
 * downloading of order book
 * getting list of accounts
 * getting account information
+* getting portfolio information
 
 More features to come.
 

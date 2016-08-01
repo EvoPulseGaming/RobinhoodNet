@@ -29,6 +29,7 @@ namespace BasicallyMe.RobinhoodNet.Raw
         static readonly string NOTIFICATIONS_URL = "https://api.robinhood.com/notifications/";
         static readonly string ORDERS_URL = "https://api.robinhood.com/orders/";
         static readonly string PASSWORD_RESET_URL = "https://api.robinhood.com/password_reset/request/";
+        static readonly string PORTFOLIOS_URL = "https://api.robinhood.com/portfolios/";
         static readonly string POSITIONS_URL = "https://api.robinhood.com/positions/";
         static readonly string QUOTES_URL = "https://api.robinhood.com/quotes/";
         static readonly string DOCUMENT_REQUESTS_URL = "https://api.robinhood.com/upload/document_requests/";

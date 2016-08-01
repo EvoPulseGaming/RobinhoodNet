@@ -123,6 +123,14 @@ namespace BasicallyMe.RobinhoodNet
         }
 
 
+        public async Task<AccountPortfolio>
+        DownloadSinglePortfolio(string account)
+        {
+            var json = await _rawClient.DownloadPortfolio(account);
+            return new AccountPortfolio(json);
+        }
+
+
         public Task<IList<Account>>
         DownloadAllAccounts ()
         {
