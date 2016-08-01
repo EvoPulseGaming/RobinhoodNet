@@ -39,6 +39,11 @@ namespace BasicallyMe.RobinhoodNet
             _rawClient = new Raw.RawRobinhoodClient();
         }
 
+        public RobinhoodClient(string token)
+        {
+            _rawClient = new Raw.RawRobinhoodClient();
+            Authenticate(token);
+        }
         public string AuthToken
         {
             get { return _rawClient.AuthToken; }
@@ -109,6 +114,14 @@ namespace BasicallyMe.RobinhoodNet
           
           return list;
         }
+        
+        public async Task<Position>
+        DownloadSinglePosition(string account, string instrument)
+        {
+            var json = await _rawClient.DownloadSinglePosition(account, instrument);
+            return new Position(json);
+        }
+
 
         public Task<IList<Account>>
         DownloadAllAccounts ()
@@ -135,6 +148,12 @@ namespace BasicallyMe.RobinhoodNet
             return downloadPagedResult<OrderSnapshot>(cursor, _rawClient.DownloadOrders, json => new OrderSnapshot(json));
         }
 
+        public async Task<OrderSnapshot>
+        DownloadSingleOrder(string Order)
+        {
+            var json = await _rawClient.DownloadOrder(Order);
+            return new OrderSnapshot(json);
+        }
 
         public async Task<OrderSnapshot>
         PlaceOrder (NewOrderSingle newOrderSingle)
