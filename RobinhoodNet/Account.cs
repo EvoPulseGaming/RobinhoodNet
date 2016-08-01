@@ -61,6 +61,78 @@ namespace BasicallyMe.RobinhoodNet
         public string AccountNumber { get; set; }
 
         public decimal MaxAchEarlyAccessAmount { get; set; }
+        
+        public decimal? DTBP
+        {
+            get
+            {
+                if (MarginBalance != null)
+                {
+                    return (MarginBalance.DayTradeBuyingPower);
+                }
+                else return null;
+            }
+        }
+
+        // If on cash account, only count settled funds
+        public decimal EffectiveCash
+        {
+            get
+            {
+            if (MarginBalance != null)
+            {
+                return (MarginBalance.UnallocatedMarginCash);
+            }
+            else return Cash;
+            }
+        }
+
+        // Returns how much buying power is available to buy shares
+        // Uses the lower of buying power or available funds.
+
+        /*
+        todo: adjust effective buying power to the lowest of the following:
+         - BuyingPower
+         - EffectiveCash
+         - DTBP / Instrument.DayTradeRatio (if DTBP != null)
+         - Portfolio.ExcessMargin / Instrument.InitialMarginRatio
+         - MarginLimit + Portfolio.Equity - Portfolio.MarketValue
+
+         - input: Instrument
+         
+        */
+        public decimal EffectiveBuyingPower
+        {
+            get
+            {
+                if (MarginBalance != null)
+                {
+                    return Math.Min(MarginBalance.UnallocatedMarginCash, BuyingPower);
+                }
+                else return CashBalance.BuyingPower;
+            }
+        }
+         
+        // cashonly = if true, use settled funds to calculate buyable shares
+        public decimal GetBuyableShares(decimal price, bool cashonly = false)
+        {
+            // Zero or negative priced shares cannot be bought
+            if (price <= 0) return 0;
+
+            decimal cash_available = Cash;
+            if (cashonly)
+            {
+                cash_available = Cash;
+            }
+            else
+            {
+                cash_available = EffectiveBuyingPower;
+            }
+
+            decimal shares = Decimal.Floor(cash_available / price);
+
+            return shares;
+        }
 
         public Account()
         {
