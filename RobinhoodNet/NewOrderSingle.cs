@@ -45,7 +45,21 @@ namespace BasicallyMe.RobinhoodNet
 
         public int Quantity { get; set; }
 
-        public decimal? Price { get; set; }
+        private decimal _price;
+        public decimal Price
+        {
+            get
+            {
+                // if order price is over 1 dollar, requires 2 decimal places of precision
+                if (_price >= 1.00m)
+                    _price = Math.Round(_price,2); 
+                return _price;
+            }
+            set
+            {
+                _price = value;
+            }
+        }
 
         public decimal? StopPrice { get; set; }
 
@@ -83,11 +97,7 @@ namespace BasicallyMe.RobinhoodNet
             d.Add("type", this.OrderType.ToString().ToLowerInvariant());
             d.Add("side", this.Side.ToString().ToLowerInvariant());
             d.Add("quantity", this.Quantity.ToString());
-
-            if (this.Price.HasValue)
-            {
-              d.Add("price", this.Price.Value.ToString());
-            }
+            d.Add("price", this.Price.ToString());
 
             if(this.StopPrice.HasValue)
             {
