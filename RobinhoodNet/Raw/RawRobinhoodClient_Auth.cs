@@ -29,7 +29,7 @@ namespace BasicallyMe.RobinhoodNet.Raw
                 {
                     { "username", userName },
                     { "password", password }
-                });
+                }).ConfigureAwait (false);
 
                 this.AuthToken = auth["token"].ToString();
             }
@@ -47,7 +47,7 @@ namespace BasicallyMe.RobinhoodNet.Raw
             // Test to see if the token is valid
             try
             {
-                await doGet(API_URL);
+                await doGet(API_URL).ConfigureAwait (false);
             }
             catch
             {
