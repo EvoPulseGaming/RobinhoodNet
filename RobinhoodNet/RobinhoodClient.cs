@@ -1,17 +1,17 @@
 // The MIT License (MIT)
-// 
+//
 // Copyright (c) 2015 Filip Frącz
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -77,7 +77,7 @@ namespace BasicallyMe.RobinhoodNet
             PagedResponse<TResult> r = null;
             do
             {
-              r = await downloadSingle(cursor).ConfigureAwait(continueOnCapturedContext: false); 
+              r = await downloadSingle(cursor).ConfigureAwait(continueOnCapturedContext: false);
                 all.AddRange(r.Items);
                 cursor = r.Next;
 
@@ -111,10 +111,10 @@ namespace BasicallyMe.RobinhoodNet
               break;
             cursor = result.Result.Next;
           }
-          
+
           return list;
         }
-        
+
         public async Task<Position>
         DownloadSinglePosition(string account, string instrument)
         {
@@ -232,18 +232,18 @@ namespace BasicallyMe.RobinhoodNet
             return DownloadQuote((IEnumerable<string>)symbols);
         }
 
-    
+
         public async Task<History>
         DownloadHistory (string symbol, string interval = "10minute", string span = "day")
         {
-            var q = await _rawClient.DownloadHistory (symbol, span, interval);
+            var q = await _rawClient.DownloadHistory (symbol, interval, span);
             return new History (q);
         }
 
         public async Task<IList<History>>
         DownloadHistory (IEnumerable<string> symbols, string interval = "10minute", string span="day")
         {
-            var qq = await _rawClient.DownloadHistory (symbols, span, interval);
+            var qq = await _rawClient.DownloadHistory (symbols, interval, span);
 
             List<History> histories = new List<History> ();
             foreach (var o in (JArray)qq) {
