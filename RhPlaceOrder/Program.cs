@@ -177,7 +177,7 @@ namespace BasicallyMe.RobinhoodNet.RhPlaceOrder
             if (System.IO.File.Exists(__tokenFile))
             {
                 var token = System.IO.File.ReadAllText(__tokenFile);
-                await client.Authenticate(token);
+                await Task.FromResult(client.Authenticate(token));
             }
             else
             {
@@ -187,7 +187,7 @@ namespace BasicallyMe.RobinhoodNet.RhPlaceOrder
                 Console.Write("password: ");
                 string password = getConsolePassword();
 
-                await client.Authenticate(userName, password);
+                await Task.FromResult(client.Authenticate(userName, password));
 
                 System.IO.Directory.CreateDirectory(
                     System.IO.Path.GetDirectoryName(__tokenFile));

@@ -35,6 +35,7 @@ namespace BasicallyMe.RobinhoodNet.Raw
         static readonly string DOCUMENT_REQUESTS_URL = "https://api.robinhood.com/upload/document_requests/";
         static readonly string USER_URL = "https://api.robinhood.com/user/";
         static readonly string WATCHLISTS_URL = "https://api.robinhood.com/watchlists/";
+        static readonly string HISTORY_URL = "https://api.robinhood.com/quotes/historicals/";
 
         public RawRobinhoodClient ()
         {

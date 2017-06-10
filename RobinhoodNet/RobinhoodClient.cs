@@ -150,6 +150,7 @@ namespace BasicallyMe.RobinhoodNet
             return downloadAll<OrderSnapshot>(this.DownloadOrders);
         }
 
+
         public Task<PagedResponse<OrderSnapshot>>
         DownloadOrders (PagedResponse<OrderSnapshot>.Cursor cursor = null)
         {
@@ -229,6 +230,31 @@ namespace BasicallyMe.RobinhoodNet
         DownloadQuote (params string[] symbols)
         {
             return DownloadQuote((IEnumerable<string>)symbols);
+        }
+
+    
+        public async Task<History>
+        DownloadHistory (string symbol, string interval = "10minute", string span = "day")
+        {
+            var q = await _rawClient.DownloadHistory (symbol, span, interval);
+            return new History (q);
+        }
+
+        public async Task<IList<History>>
+        DownloadHistory (IEnumerable<string> symbols, string interval = "10minute", string span="day")
+        {
+            var qq = await _rawClient.DownloadHistory (symbols, span, interval);
+
+            List<History> histories = new List<History> ();
+            foreach (var o in (JArray)qq) {
+                History h = null;
+                if (o != null && o.HasValues) {
+                    h = new History (o);
+                }
+                histories.Add (h);
+            }
+
+            return histories;
         }
     }
 }

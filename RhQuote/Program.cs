@@ -49,6 +49,7 @@ namespace BasicallyMe.RobinhoodNet.RhQuote
             try
             {
                 var quotes = rh.DownloadQuote(args).Result;
+                var history = rh.DownloadHistory (args, "5minute", "week").Result;
                 Console.WriteLine(DateTime.Now);
                 foreach (var q in quotes)
                 {
@@ -63,6 +64,25 @@ namespace BasicallyMe.RobinhoodNet.RhQuote
                                       q.LastTradePrice,
                                       q.BidPrice,
                                       q.AskPrice);
+                }
+                foreach (var h in history) {
+                    if (h == null) {
+                        continue;
+                    }
+
+                    Console.WriteLine ("{0}\tInterval: {1}\tSpan: {2}\tBound: {3}",
+                                      h.Symbol,
+                                      h.Interval,
+                                      h.Span,
+                                      h.Bounds);
+                    foreach (var p in h.HistoricalInfo) {
+                        Console.WriteLine ("{0}\tOpen: {1}\tClose: {2}\tHigh: {3}\tLow: {3}",
+                                          p.BeginsAt,
+                                           p.OpenPrice,
+                                           p.ClosePrice,
+                                           p.HighPrice,
+                                           p.LowPrice);
+                    }
                 }
             }
             catch
