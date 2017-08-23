@@ -8,13 +8,13 @@ namespace BasicallyMe.RobinhoodNet.Raw
 {
     public partial class RawRobinhoodClient
     {
-
+        
         public Task<JToken>
         DownloadInstrument (string instrumentUrl)
         {
             return doGet(instrumentUrl);
         }
-
+        
         public Task<JToken>
         FindInstrument (string symbol)
         {
@@ -22,7 +22,7 @@ namespace BasicallyMe.RobinhoodNet.Raw
             b.Query = "query=" + symbol;
             return doGet(b.Uri);
         }
-
+        
         public Task<JToken>
         DownloadInstrumentFundamentals (string symbol)
         {
@@ -37,7 +37,7 @@ namespace BasicallyMe.RobinhoodNet.Raw
             var b = new UriBuilder(QUOTES_URL);
             b.Query = "symbols=" + symbol;
 
-            var json = await doGet(b.Uri).ConfigureAwait (false);
+            var json = await doGet(b.Uri);
             return json["results"][0];
         }
 
@@ -47,7 +47,7 @@ namespace BasicallyMe.RobinhoodNet.Raw
             var b = new UriBuilder(QUOTES_URL);
             b.Query = "symbols=" + String.Join(",", symbols);
 
-            var json = await doGet(b.Uri).ConfigureAwait (false);
+            var json = await doGet(b.Uri);
 
             return json["results"];
         }

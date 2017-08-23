@@ -63,9 +63,9 @@ namespace BasicallyMe.RobinhoodNet.Raw
         async Task<JToken>
         parseJsonResponse (Task<HttpResponseMessage> response)
         {
-            var r = await response.ConfigureAwait (false);
+              var r = await response;
             r.EnsureSuccessStatusCode();
-            string content = await r.Content.ReadAsStringAsync().ConfigureAwait (false);
+            string content = await r.Content.ReadAsStringAsync();
             
             JObject result = JObject.Parse(content);
             return result;

@@ -19,7 +19,7 @@ namespace BasicallyMe.RobinhoodNet.Raw
                       "&interval=" + interval +
                       "&span=" + span;
 
-            var json = await doGet (b.Uri).ConfigureAwait (false);
+            var json = await doGet (b.Uri);
             return json ["results"] [0];
         }    
 
@@ -31,7 +31,7 @@ namespace BasicallyMe.RobinhoodNet.Raw
                       "&interval=" + interval +
                       "&span=" + span;
 
-            var json = await doGet (b.Uri).ConfigureAwait (false);
+            var json = await doGet (b.Uri);
 
             return json ["results"];
         } 
