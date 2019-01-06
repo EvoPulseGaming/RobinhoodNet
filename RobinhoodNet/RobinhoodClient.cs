@@ -150,6 +150,13 @@ namespace BasicallyMe.RobinhoodNet
             return downloadAll<OrderSnapshot>(this.DownloadOrders);
         }
 
+        public async Task<IList<OrderSnapshot>>
+        DownloadOrders(DateTime updatedAt)
+        {
+            var json = await _rawClient.DownloadOrders(updatedAt);
+            var result = new PagedJsonResponse<OrderSnapshot>(json, item => new OrderSnapshot(item));
+            return result.Items;
+        }
 
         public Task<PagedResponse<OrderSnapshot>>
         DownloadOrders (PagedResponse<OrderSnapshot>.Cursor cursor = null)
@@ -234,16 +241,16 @@ namespace BasicallyMe.RobinhoodNet
 
 
         public async Task<History>
-        DownloadHistory (string symbol, string interval = "10minute", string span = "day")
+        DownloadHistory (string symbol, string interval = "10minute", string span = "day", string bounds = "trading")
         {
-            var q = await _rawClient.DownloadHistory (symbol, interval, span);
+            var q = await _rawClient.DownloadHistory (symbol, interval, span, bounds);
             return new History (q);
         }
 
         public async Task<IList<History>>
-        DownloadHistory (IEnumerable<string> symbols, string interval = "10minute", string span="day")
+        DownloadHistory (IEnumerable<string> symbols, string interval = "10minute", string span="day", string bounds = "trading")
         {
-            var qq = await _rawClient.DownloadHistory (symbols, interval, span);
+            var qq = await _rawClient.DownloadHistory (symbols, interval, span, bounds);
 
             List<History> histories = new List<History> ();
             foreach (var o in (JArray)qq) {

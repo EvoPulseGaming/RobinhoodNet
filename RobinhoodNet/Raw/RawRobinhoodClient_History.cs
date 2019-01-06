@@ -12,24 +12,26 @@ namespace BasicallyMe.RobinhoodNet.Raw
         // History Spans { "day", "week", "year", "all" };
 
         public async Task<JToken>
-        DownloadHistory (string symbol, string interval, string span )
+        DownloadHistory (string symbol, string interval, string span, string bounds)
         {
             var b = new UriBuilder (HISTORY_URL);
             b.Query = "symbols=" + symbol + 
                       "&interval=" + interval +
-                      "&span=" + span;
+                      "&span=" + span +
+                      "&bounds=" + bounds;
 
             var json = await doGet (b.Uri);
             return json ["results"] [0];
         }    
 
         public async Task<JToken>
-        DownloadHistory (IEnumerable<string> symbols, string interval, string span)
+        DownloadHistory (IEnumerable<string> symbols, string interval, string span, string bounds)
         {
             var b = new UriBuilder (HISTORY_URL);
             b.Query = "symbols=" + String.Join (",", symbols) +
                       "&interval=" + interval +
-                      "&span=" + span;
+                      "&span=" + span +
+                      "&bounds=" + bounds;
 
             var json = await doGet (b.Uri);
 

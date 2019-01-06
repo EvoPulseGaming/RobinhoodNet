@@ -15,6 +15,14 @@ namespace BasicallyMe.RobinhoodNet.Raw
             return doGet(url);
         }
 
+        public async Task<JToken>
+        DownloadOrders(DateTime updateAt)
+        {
+            var b = new UriBuilder(ORDERS_URL);
+            b.Query = "updated_at=" + updateAt.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
+            return await doGet(b.Uri);
+        }
+
         public Task<JToken>
         DownloadOrder(string order)
         {
