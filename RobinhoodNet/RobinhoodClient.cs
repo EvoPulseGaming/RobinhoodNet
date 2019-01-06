@@ -92,7 +92,7 @@ namespace BasicallyMe.RobinhoodNet
             Func<string, Task<JToken>> downloader,
             Func<JToken, TResult> decoder)
         {
-          var resp = await downloader(cursor == null ? null : cursor.Uri.ToString()).ConfigureAwait(continueOnCapturedContext: false); ;
+            var resp = await downloader(cursor == null ? null : cursor.Uri.ToString()).ConfigureAwait(continueOnCapturedContext: false);
             var result = new PagedJsonResponse<TResult>(resp, decoder);
             return result;
         }
@@ -118,7 +118,7 @@ namespace BasicallyMe.RobinhoodNet
         public async Task<Position>
         DownloadSinglePosition(string account, string instrument)
         {
-            var json = await _rawClient.DownloadSinglePosition(account, instrument);
+            var json = await _rawClient.DownloadSinglePosition(account, instrument).ConfigureAwait (false);
             return new Position(json);
         }
 
@@ -126,7 +126,7 @@ namespace BasicallyMe.RobinhoodNet
         public async Task<AccountPortfolio>
         DownloadSinglePortfolio(string account)
         {
-            var json = await _rawClient.DownloadPortfolio(account);
+            var json = await _rawClient.DownloadPortfolio(account).ConfigureAwait (false);
             return new AccountPortfolio(json);
         }
 
@@ -153,7 +153,7 @@ namespace BasicallyMe.RobinhoodNet
         public async Task<IList<OrderSnapshot>>
         DownloadOrders(DateTime updatedAt)
         {
-            var json = await _rawClient.DownloadOrders(updatedAt);
+            var json = await _rawClient.DownloadOrders(updatedAt).ConfigureAwait (false);
             var result = new PagedJsonResponse<OrderSnapshot>(json, item => new OrderSnapshot(item));
             return result.Items;
         }
@@ -167,14 +167,14 @@ namespace BasicallyMe.RobinhoodNet
         public async Task<OrderSnapshot>
         DownloadSingleOrder(string Order)
         {
-            var json = await _rawClient.DownloadOrder(Order);
+            var json = await _rawClient.DownloadOrder(Order).ConfigureAwait (false);
             return new OrderSnapshot(json);
         }
 
         public async Task<OrderSnapshot>
         PlaceOrder (NewOrderSingle newOrderSingle)
         {
-            var json = await _rawClient.PlaceOrder(newOrderSingle.ToDictionary());
+            var json = await _rawClient.PlaceOrder(newOrderSingle.ToDictionary()).ConfigureAwait (false);
             return new OrderSnapshot(json);
         }
 
@@ -188,14 +188,14 @@ namespace BasicallyMe.RobinhoodNet
         public async Task<Instrument>
         DownloadInstrument (Url<Instrument> instrumentUrl)
         {
-            var json = await _rawClient.DownloadInstrument(instrumentUrl.Uri.ToString());
+            var json = await _rawClient.DownloadInstrument(instrumentUrl.Uri.ToString()).ConfigureAwait (false);
             return new Instrument(json);
         }
 
         public async Task<IList<Instrument>>
         FindInstrument (string symbol)
         {
-            var resp = await _rawClient.FindInstrument(symbol);
+            var resp = await _rawClient.FindInstrument(symbol).ConfigureAwait (false);
             var result = new PagedJsonResponse<Instrument>(resp, item => new Instrument(item));
             return result.Items;
         }
@@ -203,21 +203,21 @@ namespace BasicallyMe.RobinhoodNet
         public async Task<Quote>
         DownloadQuote (string symbol)
         {
-            var q = await _rawClient.DownloadQuote(symbol);
+            var q = await _rawClient.DownloadQuote(symbol).ConfigureAwait (false);
             return new Quote(q);
         }
 
         public async Task<Quote>
           DownloadInstrument(string InstrumentURL)
         {
-          var q = await _rawClient.DownloadInstrument(InstrumentURL);
+          var q = await _rawClient.DownloadInstrument(InstrumentURL).ConfigureAwait (false);
           return new Quote(q);
         }
 
         public async Task<IList<Quote>>
         DownloadQuote (IEnumerable<string> symbols)
         {
-            var qq = await _rawClient.DownloadQuote(symbols);
+            var qq = await _rawClient.DownloadQuote(symbols).ConfigureAwait (false);
 
             List<Quote> quotes = new List<Quote>();
             foreach (var o in (JArray)qq)
@@ -243,14 +243,14 @@ namespace BasicallyMe.RobinhoodNet
         public async Task<History>
         DownloadHistory (string symbol, string interval = "10minute", string span = "day", string bounds = "trading")
         {
-            var q = await _rawClient.DownloadHistory (symbol, interval, span, bounds);
+            var q = await _rawClient.DownloadHistory (symbol, interval, span, bounds).ConfigureAwait (false);
             return new History (q);
         }
 
         public async Task<IList<History>>
         DownloadHistory (IEnumerable<string> symbols, string interval = "10minute", string span="day", string bounds = "trading")
         {
-            var qq = await _rawClient.DownloadHistory (symbols, interval, span, bounds);
+            var qq = await _rawClient.DownloadHistory (symbols, interval, span, bounds).ConfigureAwait (false);
 
             List<History> histories = new List<History> ();
             foreach (var o in (JArray)qq) {

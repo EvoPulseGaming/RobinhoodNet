@@ -30,11 +30,11 @@ namespace BasicallyMe.RobinhoodNet.Raw
             b.Path = b.Path + order + "/";
             return doGet(b.Uri);
         }
-        
+
         public async Task
         CancelOrder(string orderCancelUrl)
         {
-            var r = await doPost_NativeResponse(orderCancelUrl);
+            var r = await doPost_NativeResponse(orderCancelUrl).ConfigureAwait (false);
             r.EnsureSuccessStatusCode();
         }
 

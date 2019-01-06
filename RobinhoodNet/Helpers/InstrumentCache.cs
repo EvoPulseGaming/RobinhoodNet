@@ -1,17 +1,17 @@
 ﻿// The MIT License (MIT)
-// 
+//
 // Copyright (c) 2015 Filip Frącz
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -53,7 +53,7 @@ namespace BasicallyMe.RobinhoodNet.Helpers
             Instrument instrument = null;
             if (!_instrumentKeyToIntrument.TryGetValue(instrumentUrl.ToString(), out instrument))
             {
-                instrument = await _client.DownloadInstrument(instrumentUrl);
+                instrument = await _client.DownloadInstrument(instrumentUrl).ConfigureAwait (false);
                 addInstrument(instrument);
             }
             return instrument;
@@ -65,7 +65,7 @@ namespace BasicallyMe.RobinhoodNet.Helpers
             if (!_symbolToInstrument.TryGetValue(symbol, out instrument))
             {
                 // Find the instrument
-                var list = await _client.FindInstrument(symbol);
+                var list = await _client.FindInstrument(symbol).ConfigureAwait (false);
                 instrument = list.First(i => i.Symbol == symbol);
                 addInstrument(instrument);
             }
@@ -83,7 +83,7 @@ namespace BasicallyMe.RobinhoodNet.Helpers
             Instrument instrument = null;
             if (!_instrumentKeyToIntrument.TryGetValue(instrumentUrl, out instrument))
             {
-                instrument = await _client.DownloadInstrument(new Url<Instrument>(instrumentUrl));
+                instrument = await _client.DownloadInstrument(new Url<Instrument>(instrumentUrl)).ConfigureAwait (false);
                 addInstrument(instrument);
             }
             return instrument.Symbol;
