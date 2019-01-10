@@ -49,6 +49,11 @@ namespace BasicallyMe.RobinhoodNet
             get { return _rawClient.AuthToken; }
         }
 
+        public string RefreshToken
+        {
+            get { return _rawClient.RefreshToken; }
+        }
+
         public bool Authenticate (string userName, string password)
         {
             return _rawClient.Authenticate(userName, password).Result;

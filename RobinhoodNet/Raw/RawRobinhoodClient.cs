@@ -13,7 +13,7 @@ namespace BasicallyMe.RobinhoodNet.Raw
         HttpClient _httpClient;
 
         static readonly string API_URL = "https://api.robinhood.com/";
-        static readonly string LOGIN_URL = "https://api.robinhood.com/api-token-auth/";
+        static readonly string LOGIN_URL = "https://api.robinhood.com/oauth2/token/";
         static readonly string INVESTMENT_PROFILE_URL = "https://api.robinhood.com/user/investment_profile/";
         static readonly string ACCOUNTS_URL = "https://api.robinhood.com/accounts/";
         static readonly string ACH_IAV_AUTH = "https://api.robinhood.com/ach/iav/auth/";

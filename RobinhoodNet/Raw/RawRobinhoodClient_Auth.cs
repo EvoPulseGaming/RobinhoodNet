@@ -15,10 +15,12 @@ namespace BasicallyMe.RobinhoodNet.Raw
             {
                 _authToken = value;
                 _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(
-                    "Token",
+                    "Bearer",
                     _authToken);
             }
         }
+
+        public string RefreshToken;
 
         public async Task<bool>
         Authenticate (string userName, string password)
@@ -28,10 +30,13 @@ namespace BasicallyMe.RobinhoodNet.Raw
                 var auth = await doPost(LOGIN_URL, new Dictionary<string, string>
                 {
                     { "username", userName },
-                    { "password", password }
+                    { "password", password },
+                    { "grant_type", "password" },
+                    { "client_id", "c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS" }
                 }).ConfigureAwait (false);
 
-                this.AuthToken = auth["token"].ToString();
+                this.AuthToken = auth["access_token"].ToString();
+                this.RefreshToken = auth["refresh_token"].ToString();
             }
             catch
             {
@@ -42,16 +47,20 @@ namespace BasicallyMe.RobinhoodNet.Raw
 
         public async Task<bool> Authenticate (string token)
         {
-            this.AuthToken = token;
-
-            // Test to see if the token is valid
             try
             {
-                await doGet(API_URL).ConfigureAwait (false);
+                var auth = await doPost(LOGIN_URL, new Dictionary<string, string>
+                {
+                    { "refresh_token", token },
+                    { "grant_type", "refresh_token" },
+                    { "client_id", "c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS" }
+                }).ConfigureAwait(false);
+
+                this.AuthToken = auth["access_token"].ToString();
+                this.RefreshToken = auth["refresh_token"].ToString();
             }
             catch
             {
-                token = null;
                 return false;
             }
             return true;
