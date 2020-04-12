@@ -34,6 +34,8 @@
   <ItemGroup>
     <Compile Include="ACHRelationship.cs" />
     <Compile Include="ACHTransfer.cs" />
+    <Compile Include="DataTypes\ChallengeDetails.cs" />
+    <Compile Include="DataTypes\ChallengeInfo.cs" />
     <Compile Include="Dividend.cs" />
     <Compile Include="Helpers\InstrumentCache.cs" />
     <Compile Include="Hours.cs" />
@@ -83,6 +85,9 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Newtonsoft.Json.10.0.3\lib\portable-net45+win8+wp8+wpa81\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.ValueTuple.4.5.0\lib\portable-net40+sl4+win8+wp8\System.ValueTuple.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ProjectExtensions>

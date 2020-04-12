@@ -11,9 +11,11 @@ namespace BasicallyMe.RobinhoodNet.Raw
     public partial class RawRobinhoodClient
     {
         HttpClient _httpClient;
-
-        static readonly string API_URL = "https://api.robinhood.com/";
+        
+        static readonly string API_URL = "api.robinhood.com";
+        static readonly string API_VERSION = "1.315.0";
         static readonly string LOGIN_URL = "https://api.robinhood.com/oauth2/token/";
+        static readonly string CHALLENGE_URL = "https://api.robinhood.com/challenge/";
         static readonly string INVESTMENT_PROFILE_URL = "https://api.robinhood.com/user/investment_profile/";
         static readonly string ACCOUNTS_URL = "https://api.robinhood.com/accounts/";
         static readonly string ACH_IAV_AUTH = "https://api.robinhood.com/ach/iav/auth/";
@@ -47,14 +49,12 @@ namespace BasicallyMe.RobinhoodNet.Raw
             }
 
             _httpClient = new HttpClient(handler);
+            _httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0");
             _httpClient.DefaultRequestHeaders.Add("Accept", "*/*");
+            _httpClient.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
             _httpClient.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate");
-            _httpClient.DefaultRequestHeaders.Add(
-                "Accept-Language",
-                "en;q=1, fr;q=0.9, de;q=0.8, ja;q=0.7, nl;q=0.6, it;q=0.5");
-            _httpClient.DefaultRequestHeaders.Add("X-Robinhood-API-Version", "1.95.1");
+            _httpClient.DefaultRequestHeaders.Add("X-Robinhood-API-Version", API_VERSION);
             _httpClient.DefaultRequestHeaders.Add("Connection", "keep-alive");
-            _httpClient.DefaultRequestHeaders.Add("User-Agent", "Robinhood/823 (iPhone; iOS 7.1.2; Scale/2.00)");
         }
 
 

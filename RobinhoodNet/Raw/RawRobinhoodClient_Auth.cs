@@ -2,6 +2,9 @@ using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json.Linq;
+using BasicallyMe.RobinhoodNet.DataTypes;
+using Newtonsoft.Json;
 
 namespace BasicallyMe.RobinhoodNet.Raw
 {
@@ -22,30 +25,91 @@ namespace BasicallyMe.RobinhoodNet.Raw
 
         public string RefreshToken;
 
-        public async Task<bool>
-        Authenticate (string userName, string password)
+        public async Task<(bool, ChallengeInfo)>
+        Authenticate (string userName, string password, string deviceToken, string challengeID)
         {
-            try
+            if (!string.IsNullOrEmpty(challengeID))
             {
-                var auth = await doPost(LOGIN_URL, new Dictionary<string, string>
+                _httpClient.DefaultRequestHeaders.Add("X-ROBINHOOD-CHALLENGE-RESPONSE-ID", challengeID);
+                try
                 {
+                    var message = await doPost_NativeResponse(LOGIN_URL, new Dictionary<string, string>
+                {
+                    { "grant_type", "password" },
+                    {"scope", "internal" },
+                    { "client_id", "c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS" },
+                    {"expires_in", "86400" },
+                    {"device_token", deviceToken },
                     { "username", userName },
                     { "password", password },
-                    { "grant_type", "password" },
-                    { "client_id", "c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS" }
-                }).ConfigureAwait (false);
+                    { "challenge_type", "sms" }
 
-                this.AuthToken = auth["access_token"].ToString();
-                this.RefreshToken = auth["refresh_token"].ToString();
+                }).ConfigureAwait(false);
+
+
+                    if (message.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    {
+                        string content = await message.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                        var challenge = JsonConvert.DeserializeObject<ChallengeInfo>(content);
+
+                        if (challenge.challenge.status == "issued")
+                        {
+                            if (!string.IsNullOrEmpty(challengeID))
+                            {
+                                _httpClient.DefaultRequestHeaders.Remove("X-ROBINHOOD-CHALLENGE-RESPONSE-ID");
+                            }
+                            return (false, challenge);
+                        }
+
+
+                    }
+
+                }
+                catch
+                {
+                    if (!string.IsNullOrEmpty(challengeID))
+                    {
+                        _httpClient.DefaultRequestHeaders.Remove("X-ROBINHOOD-CHALLENGE-RESPONSE-ID");
+                    }
+                    return (false, null);
+                }
             }
-            catch
+            else
             {
-                return false;
+                try
+                {
+                    var auth = await doPost(LOGIN_URL, new Dictionary<string, string>
+                {
+                    { "grant_type", "password" },
+                    {"scope", "internal" },
+                    { "client_id", "c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS" },
+                    {"expires_in", "86400" },
+                    {"device_token", deviceToken },
+                    { "username", userName },
+                    { "password", password },
+                    { "challenge_type", "sms" }
+                }).ConfigureAwait(false);
+
+                    this.AuthToken = auth["access_token"].ToString();
+                    this.RefreshToken = auth["refresh_token"].ToString();
+                }
+                catch
+                {
+                    return (false, null);
+                }
+                return (true, null);
             }
-            return true;
+
+
+            if (!string.IsNullOrEmpty(challengeID))
+            {
+                _httpClient.DefaultRequestHeaders.Remove("X-ROBINHOOD-CHALLENGE-RESPONSE-ID");
+            }
+            return (true, null);
         }
 
-        public async Task<bool> Authenticate (string token)
+        public async Task<bool> Authenticate(string token)
         {
             try
             {
@@ -64,6 +128,103 @@ namespace BasicallyMe.RobinhoodNet.Raw
                 return false;
             }
             return true;
+        }
+
+        //public async Task<bool> SignIn_SMS_Verify(string userName, string password, string challenge_token)
+        //{
+        //    try
+        //    {
+        //        var auth = await doPost(LOGIN_URL, new Dictionary<string, string>
+        //        {
+        //            { "grant_type", "password" },
+        //            {"scope", "internal" },
+        //            { "client_id", "c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS" },
+        //            {"expires_in", "86400" },
+        //            //{"device_token", deviceToken },
+        //            { "username", userName },
+        //            { "password", password },
+        //            { "X-ROBINHOOD-CHALLENGE-RESPONSE-ID", challenge_token },
+        //        }).ConfigureAwait(false);
+
+        //        this.AuthToken = auth["access_token"].ToString();
+        //        this.RefreshToken = auth["refresh_token"].ToString();
+        //    }
+        //    catch
+        //    {
+        //        return false;
+        //    }
+        //    return true;
+
+
+
+        //}
+
+        public async Task<(bool, ChallengeInfo)>
+        ChallengeResponse(string id, string code)
+        {
+            try
+            {
+                var message = await doPost_NativeResponse(CHALLENGE_URL + id + "/respond/", new Dictionary<string, string>
+                {
+                    { "response", code },
+                }).ConfigureAwait(false);
+
+                string content = await message.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+
+
+                if (message.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var challenge = JsonConvert.DeserializeObject<ChallengeDetails>(content);
+                    if (challenge.status == "validated")
+                    {
+                        var newChallenge = new ChallengeInfo();
+                        newChallenge.challenge = challenge;
+                        return (true, newChallenge);
+                    }
+                }
+                else
+                {
+                    var challenge = JsonConvert.DeserializeObject<ChallengeInfo>(content);
+                    return (false, challenge);
+                }
+            }
+            catch
+            {
+                return (false, null);
+            }
+            return (false, null);
+        }
+
+        public string GenerateDeviceToken()
+        {
+            List<int> rands = new List<int>();
+            var rng = new Random();
+            for (int i = 0; i < 16; i++)
+            {
+                var r = rng.NextDouble();
+                double rand = 4294967296.0 * r;
+                rands.Add(((int)((uint)rand >> ((3 & i) << 3))) & 255);
+            }
+
+            List<string> hex = new List<string>();
+            for (int i = 0; i < 256; ++i)
+            {
+                hex.Add(Convert.ToString(i + 256, 16).Substring(1));
+            }
+
+            string id = "";
+            for (int i = 0; i < 16; i++)
+            {
+                id += hex[rands[i]];
+
+                if (i == 3 || i == 5 || i == 7 || i == 9)
+                {
+                    id += "-";
+                }
+            }
+
+            return id;
         }
     }
 }

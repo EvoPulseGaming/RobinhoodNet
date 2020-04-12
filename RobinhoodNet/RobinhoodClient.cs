@@ -26,6 +26,7 @@ using System.Collections.Generic;
 
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using BasicallyMe.RobinhoodNet.DataTypes;
 
 namespace BasicallyMe.RobinhoodNet
 {
@@ -54,14 +55,24 @@ namespace BasicallyMe.RobinhoodNet
             get { return _rawClient.RefreshToken; }
         }
 
-        public bool Authenticate (string userName, string password)
+        public string GenerateDeviceToken()
         {
-            return _rawClient.Authenticate(userName, password).Result;
+            return _rawClient.GenerateDeviceToken();
         }
 
-        public bool Authenticate (string token)
+        public (bool, ChallengeInfo) Authenticate (string userName, string password, string deviceToken, string challengeID)
+        {
+            return _rawClient.Authenticate(userName, password, deviceToken, challengeID).Result;
+        }
+
+        public bool Authenticate(string token)
         {
             return _rawClient.Authenticate(token).Result;
+        }
+
+        public (bool, ChallengeInfo) ChallengeResponse(string id, string code)
+        {
+            return _rawClient.ChallengeResponse(id, code).Result;
         }
 
         public bool isAuthenticated
