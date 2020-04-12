@@ -32,7 +32,8 @@ namespace BasicallyMe.RobinhoodNet
     {
         Unknown,
         Limit,
-        Market
+        Market,
+        StopLoss
     }
     
 }

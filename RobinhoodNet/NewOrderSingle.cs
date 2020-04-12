@@ -45,8 +45,6 @@ namespace BasicallyMe.RobinhoodNet
         public TimeInForce TimeInForce { get; set; }
 
         [JsonProperty("trigger")]
-        public string Trigger { get; set; }
-
         public TriggerType Trigger { get; set; }
 
         [JsonProperty("type")]
@@ -64,7 +62,7 @@ namespace BasicallyMe.RobinhoodNet
 
 
         [JsonProperty("price")]
-        public decimal? Price { get; set; }
+        public decimal Price
         {
             get
             {

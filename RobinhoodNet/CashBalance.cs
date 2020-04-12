@@ -43,12 +43,6 @@ namespace BasicallyMe.RobinhoodNet
 
         [JsonProperty("buying_power")]
         public decimal BuyingPower                          { get; set; }        
-
-        [JsonProperty("cash")]
-        public decimal Cash                                 { get; set; }
-
-        [JsonProperty("buying_power")]
-        public decimal BuyingPower                          { get; set; } 
     
         public decimal CashAvailableForWithdrawal           { get; set; }
 

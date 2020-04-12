@@ -119,16 +119,16 @@ namespace BasicallyMe.RobinhoodNet
 
         internal InstrumentFundamentals(Newtonsoft.Json.Linq.JToken json) : this()
         {
-            Open = (decimal?)json["open"];
-            High = (decimal?)json["high"];
-            Low = (decimal?)json["low"];
+            Open = (decimal)json["open"];
+            High = (decimal)json["high"];
+            Low = (decimal)json["low"];
             Volume = (decimal)json["volume"];
             AverageVolume = (decimal)json["average_volume"];
             High52Weeks = (decimal)json["high_52_weeks"];
-            DividendYield = (decimal?)json["dividend_yield"];
+            DividendYield = (decimal)json["dividend_yield"];
             Low52Weeks = (decimal)json["low_52_weeks"];
             MarketCap = (decimal)json["market_cap"];
-            PERatio = (decimal?)json["pe_ratio"];
+            PERatio = (decimal)json["pe_ratio"];
             Description = (string)json["description"];
             Instrument = new Url<Instrument>((string)json["instrument"]);
         }

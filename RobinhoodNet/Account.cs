@@ -66,7 +66,7 @@ namespace BasicallyMe.RobinhoodNet
         public dynamic MarginBalances { get; set; }
 
         [JsonProperty("cash_balances")]
-        public Balance CashBalance { get; set; }
+        public CashBalance CashBalances { get; set; }
 
         [JsonProperty("portfolio")]
         [JsonConverter(typeof(TypedUrlConverter<AccountPortfolio>))]
@@ -94,9 +94,9 @@ namespace BasicallyMe.RobinhoodNet
         {
             get
             {
-                if (MarginBalance != null)
+                if (MarginBalances != null)
                 {
-                    return (MarginBalance.DayTradeBuyingPower);
+                    return (MarginBalances.DayTradeBuyingPower);
                 }
                 else return null;
             }
@@ -107,9 +107,9 @@ namespace BasicallyMe.RobinhoodNet
         {
             get
             {
-            if (MarginBalance != null)
+            if (MarginBalances != null)
             {
-                return (MarginBalance.UnallocatedMarginCash);
+                return (MarginBalances.UnallocatedMarginCash);
             }
             else return Cash;
             }
@@ -133,11 +133,11 @@ namespace BasicallyMe.RobinhoodNet
         {
             get
             {
-                if (MarginBalance != null)
+                if (MarginBalances != null)
                 {
-                    return Math.Min(MarginBalance.UnallocatedMarginCash, BuyingPower);
+                    return Math.Min(MarginBalances.UnallocatedMarginCash, BuyingPower);
                 }
-                else return CashBalance.BuyingPower;
+                else return CashBalances.BuyingPower;
             }
         }
          
@@ -164,7 +164,7 @@ namespace BasicallyMe.RobinhoodNet
 
         public Account()
         {
-            CashBalance = new CashBalance();
+            CashBalances = new CashBalance();
         }
 
         internal Account(Newtonsoft.Json.Linq.JToken json) : this()
@@ -195,11 +195,11 @@ namespace BasicallyMe.RobinhoodNet
 
             // mark MarginBalance, CashBalance null if they do not exist
 
-            try { CashBalance = new CashBalance(json["cash_balances"]); }
-            catch { CashBalance = null; }
+            try { CashBalances = new CashBalance(json["cash_balances"]); }
+            catch { CashBalances = null; }
 
-            try { MarginBalance = new MarginBalance(json["margin_balances"]); }
-            catch { MarginBalance = null; }
+            try { MarginBalances = new MarginBalance(json["margin_balances"]); }
+            catch { MarginBalances = null; }
 
             MaxAchEarlyAccessAmount = (decimal)json["max_ach_early_access_amount"];
         }

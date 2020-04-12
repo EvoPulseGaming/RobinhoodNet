@@ -33,6 +33,11 @@ namespace BasicallyMe.RobinhoodNet
         [Newtonsoft.Json.JsonConstructor]
         public Url(string url)
         {
+            //Robinhood does not send this correctly for whatever reason.
+            if(url == "api.robinhood.com/user/")
+            {
+                url = "https://api.robinhood.com/user/";
+            }
             this.Uri = new Uri(url);
         }
 

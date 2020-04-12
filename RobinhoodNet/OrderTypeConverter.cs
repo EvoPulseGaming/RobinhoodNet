@@ -48,6 +48,10 @@ namespace BasicallyMe.RobinhoodNet
             {
                 result = OrderType.Market;
             }
+            else if (str.Equals("stoploss", StringComparison.OrdinalIgnoreCase))
+            {
+                result = OrderType.StopLoss;
+            }
 
             return result;
         }

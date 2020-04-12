@@ -91,7 +91,7 @@ namespace BasicallyMe.RobinhoodNet
         {
             var all = new List<TResult>();
 
-            PagedResponse<TResult>.Cursor cursor = null;
+            //PagedResponse<TResult>.Cursor cursor = null;
             PagedResponse<TResult> r = null;
             do
             {

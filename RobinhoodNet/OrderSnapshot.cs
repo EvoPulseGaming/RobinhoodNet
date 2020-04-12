@@ -28,18 +28,6 @@ using Newtonsoft.Json;
 namespace BasicallyMe.RobinhoodNet
 {
 
-    public enum TimeInForce
-    {
-        Unknown,
-        GoodTillCancel,
-        GoodForDay
-    }
-
-    public enum Side
-    {
-        Buy,
-        Sell
-    }
 
     public enum TriggerType
     {
@@ -47,13 +35,6 @@ namespace BasicallyMe.RobinhoodNet
       Stop
     }
 
-    public enum OrderType
-    {
-        Unknown,
-        Limit,
-        Market,
-        StopLoss
-    }
 
     
 

@@ -116,7 +116,7 @@ namespace BasicallyMe.RobinhoodNet
 
             AccountUrl = new Url<Account>((string)json["account"]);
             InstrumentUrl = new Url<Instrument>((string)json["instrument"]);
-            Url = new Url<Position>((string)json["url"]);
+            PositionUrl = new Url<Position>((string)json["url"]);
 
             CreatedAt = (DateTime)json["created_at"];
             UpdatedAt = (DateTime)json["updated_at"];
