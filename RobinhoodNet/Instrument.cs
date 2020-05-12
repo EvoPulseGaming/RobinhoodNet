@@ -31,7 +31,7 @@ namespace BasicallyMe.RobinhoodNet
     {
         [JsonProperty("splits")]
         [JsonConverter(typeof(TypedUrlConverter<InstrumentSplit>))]
-        public Url<Splits>  InstrumentSplitsUrl { get; set; }
+        public Url<InstrumentSplit>  InstrumentSplitsUrl { get; set; }
 
         [JsonProperty("margin_initial_ratio")]
         public decimal MarginInitialRatio { get; set; }
@@ -81,7 +81,7 @@ namespace BasicallyMe.RobinhoodNet
         internal Instrument (Newtonsoft.Json.Linq.JToken json)
         {
             // "splits": "https:\\/\\/api.robinhood.com\\/instruments\\/376ca781-1333-40ca-bd61-a48f46ebd950\\/splits\\/",
-            this.InstrumentSplitsUrl = new Url<Splits>((string)json["splits"]);
+            this.InstrumentSplitsUrl = new Url<InstrumentSplit>((string)json["splits"]);
 
             //"margin_initial_ratio": "0.5000",
             this.MarginInitialRatio = (decimal)json["margin_initial_ratio"];

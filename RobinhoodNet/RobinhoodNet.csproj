@@ -53,7 +53,6 @@
     <Compile Include="Raw\RawRobinhoodClient_Unsorted.cs" />
     <Compile Include="RobinhoodClient.cs" />
     <Compile Include="Execution.cs" />
-    <Compile Include="Splits.cs" />
     <Compile Include="Urls.cs" />
     <Compile Include="Raw\RawRobinhoodClient.cs" />
     <Compile Include="Raw\RawRobinhoodClient_Account.cs" />
