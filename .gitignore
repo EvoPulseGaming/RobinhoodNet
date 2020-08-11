@@ -42,3 +42,4 @@ Thumbs.db
 
 #dotCover
 *.dotCover
+.vs/RobinhoodNet/v16/Server/sqlite3/*

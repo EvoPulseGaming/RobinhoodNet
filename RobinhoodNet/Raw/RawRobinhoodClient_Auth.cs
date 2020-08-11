@@ -26,90 +26,112 @@ namespace BasicallyMe.RobinhoodNet.Raw
         public string RefreshToken;
 
         public async Task<(bool, ChallengeInfo)>
-        Authenticate (string userName, string password, string deviceToken, string challengeID)
+        Authenticate(string userName, string password, string deviceToken, string challengeID)
         {
-            if (!string.IsNullOrEmpty(challengeID))
+
+            //First login attempt, either we are already F2A or we need to generate a response(SMS)
+            try
             {
-                _httpClient.DefaultRequestHeaders.Add("X-ROBINHOOD-CHALLENGE-RESPONSE-ID", challengeID);
-                try
+                System.Net.Http.HttpResponseMessage message;
+                if (challengeID == "") //Normal login
                 {
-                    var message = await doPost_NativeResponse(LOGIN_URL, new Dictionary<string, string>
-                {
+                    message = await doPost_NativeResponse(LOGIN_URL, new Dictionary<string, string>
+                    {
                     { "grant_type", "password" },
                     {"scope", "internal" },
                     { "client_id", "c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS" },
                     {"expires_in", "86400" },
                     {"device_token", deviceToken },
                     { "username", userName },
-                    { "password", password },
-                    { "challenge_type", "sms" }
-
-                }).ConfigureAwait(false);
-
-
-                    if (message.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    { "password", password }
+                    }).ConfigureAwait(false);
+                }
+                else// Challenge based login
+                {
+                    _httpClient.DefaultRequestHeaders.Add("X-ROBINHOOD-CHALLENGE-RESPONSE-ID", challengeID);
+                    message = await doPost_NativeResponse(LOGIN_URL, new Dictionary<string, string>
                     {
-                        string content = await message.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    { "grant_type", "password" },
+                    {"scope", "internal" },
+                    { "client_id", "c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS" },
+                    {"expires_in", "86400" },
+                    {"device_token", deviceToken },
+                    { "challenge_type", "sms" },
+                    { "username", userName },
+                    { "password", password }
+                    }).ConfigureAwait(false);
+                }
 
-                        var challenge = JsonConvert.DeserializeObject<ChallengeInfo>(content);
+                string content = await message.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-                        if (challenge.challenge.status == "issued")
+                JObject result = JObject.Parse(content);
+
+                if (message.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    //New device, must SMS challenge
+                    if (result["detail"].ToString().Contains("challenge type required"))
+                    {
+                        try
                         {
-                            if (!string.IsNullOrEmpty(challengeID))
+                            var message_challenge = await doPost_NativeResponse(LOGIN_URL, new Dictionary<string, string>
+                                {
+                                { "grant_type", "password" },
+                                {"scope", "internal" },
+                                { "client_id", "c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS" },
+                                {"expires_in", "86400" },
+                                {"device_token", deviceToken },
+                                { "username", userName },
+                                { "password", password },
+                                { "challenge_type", "sms" }
+                                }).ConfigureAwait(false);
+
+                            if (message_challenge.StatusCode == System.Net.HttpStatusCode.BadRequest)
                             {
-                                _httpClient.DefaultRequestHeaders.Remove("X-ROBINHOOD-CHALLENGE-RESPONSE-ID");
+                                string content_challenge = await message_challenge.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                                var challenge = JsonConvert.DeserializeObject<ChallengeInfo>(content_challenge);
+
+                                //Challenge was issued, we can now SMS verify,
+                                //return false+challege so SMS verify GUI and pop up
+                                if (challenge.challenge.status == "issued")
+                                {
+                                    if (!string.IsNullOrEmpty(challengeID))
+                                    {
+                                        
+                                    }
+                                    return (false, challenge);
+                                }
                             }
-                            return (false, challenge);
                         }
+                        catch
+                        {
 
-
+                        }
                     }
-
-                }
-                catch
-                {
-                    if (!string.IsNullOrEmpty(challengeID))
+                    else//bad login
                     {
-                        _httpClient.DefaultRequestHeaders.Remove("X-ROBINHOOD-CHALLENGE-RESPONSE-ID");
+                        return (false, null);
                     }
-                    return (false, null);
+
+
+                }
+                else//We already have F2A from prior login. Normal login.
+                {
+                    this.AuthToken = result["access_token"].ToString();
+                    this.RefreshToken = result["refresh_token"].ToString();
+                    _httpClient.DefaultRequestHeaders.Remove("X-ROBINHOOD-CHALLENGE-RESPONSE-ID");
+                    return (true, null);
                 }
             }
-            else
+            catch
             {
-                try
-                {
-                    var auth = await doPost(LOGIN_URL, new Dictionary<string, string>
-                {
-                    { "grant_type", "password" },
-                    {"scope", "internal" },
-                    { "client_id", "c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS" },
-                    {"expires_in", "86400" },
-                    {"device_token", deviceToken },
-                    { "username", userName },
-                    { "password", password },
-                    { "challenge_type", "sms" }
-                }).ConfigureAwait(false);
+                return (false, null);
+            }        
+            return (false, null);
+        
+    }
 
-                    this.AuthToken = auth["access_token"].ToString();
-                    this.RefreshToken = auth["refresh_token"].ToString();
-                }
-                catch
-                {
-                    return (false, null);
-                }
-                return (true, null);
-            }
-
-
-            if (!string.IsNullOrEmpty(challengeID))
-            {
-                _httpClient.DefaultRequestHeaders.Remove("X-ROBINHOOD-CHALLENGE-RESPONSE-ID");
-            }
-            return (true, null);
-        }
-
-        public async Task<bool> Authenticate(string token)
+public async Task<bool> Authenticate(string token)
         {
             try
             {
